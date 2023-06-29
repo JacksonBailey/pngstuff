@@ -1,0 +1,21 @@
+root = true
+
+[*]
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = true # Use tailing backslash instead
+
+[*.{bat, cmd, ps1}]
+charset = latin1
+end_of_line = crlf
+
+[*.{sh, bash}]
+end_of_line = lf
+
+[*.json]
+tab_width = 2
+indent_size = 2
+indent_style = space
