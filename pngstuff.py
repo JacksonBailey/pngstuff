@@ -1,6 +1,5 @@
 from enum import Enum
 from io import IOBase
-from typing import TypeVar
 import click
 
 
