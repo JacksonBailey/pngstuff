@@ -1,9 +1,6 @@
 from enum import Enum
-from io import IOBase
+from typing import BinaryIO
 import click
-
-
-_File = type[IOBase | click.utils.LazyFile]
 
 
 class Action(Enum):
@@ -40,11 +37,11 @@ _actions = list(map(lambda e: e.value, Action))
     help="Action to take",
     default="dump",
 )
-def cli_command(input: _File, output: _File, action: str) -> None:
+def cli_command(input: BinaryIO, output: BinaryIO, action: str) -> None:
     pngstuff_action(input=input, output=output, action=Action(action))
 
 
-def pngstuff_action(input: IOBase, output: _File, action: Action) -> None:
+def pngstuff_action(input: BinaryIO, output: BinaryIO, action: Action) -> None:
     match action:
         case Action.DUMP:
             dump(input=input)
@@ -52,7 +49,7 @@ def pngstuff_action(input: IOBase, output: _File, action: Action) -> None:
             strip(input=input, output=output)
 
 
-def dump(input: _File) -> None:
+def dump(input: BinaryIO) -> None:
     header = input.read(8)
     assert header == b"\x89PNG\r\n\x1a\n"
     while True:
@@ -70,7 +67,7 @@ def dump(input: _File) -> None:
             click.echo(f"{chunk_type}\t{chunk_length}\t{chunk_data}\t{chunk_crc}")
 
 
-def strip(input: _File, output: _File) -> None:
+def strip(input: BinaryIO, output: BinaryIO) -> None:
     header = input.read(8)
     assert header == b"\x89PNG\r\n\x1a\n"
     output.write(header)
